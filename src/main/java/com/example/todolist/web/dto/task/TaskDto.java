@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 public class TaskDto {
     @NotNull(message = "id must be not null", groups = OnUpdate.class)
     private Long id;
-    @NotNull(message = "title must be not null", groups = {OnUpdate.class, OnUpdate.class})
-    @Length(max = 255, message = "title length must be less than 255 symbols", groups = {OnUpdate.class, OnUpdate.class})
+    @NotNull(message = "title must be not null", groups = {OnUpdate.class, OnCreate.class})
+    @Length(max = 255, message = "title length must be less than 255 symbols", groups = {OnUpdate.class, OnCreate.class})
     private String title;
-    @Length(max = 255, message = "description length must be less than 255 symbols", groups = {OnUpdate.class, OnUpdate.class})
+    @Length(max = 255, message = "description length must be less than 255 symbols", groups = {OnUpdate.class, OnCreate.class})
     private String description;
 
     private Status status;
