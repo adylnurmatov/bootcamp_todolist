@@ -3,6 +3,7 @@ package com.example.todolist.service.impl;
 import com.example.todolist.domain.exception.ResourceNotFoundException;
 import com.example.todolist.domain.user.Role;
 import com.example.todolist.domain.user.User;
+import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.repository.UserRepository;
 import com.example.todolist.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
     @Transactional(readOnly = true)
@@ -65,14 +67,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean isTaskOwner(Long userId, Long taskId) {
-        return false;
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("not found user"));
+        User taskOwner = taskRepository.findById(taskId).get().getUser();
+        return user.getId().equals(taskOwner.getId()) && user.getUsername().equals(taskOwner.getUsername());
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
-
     }
 
 
